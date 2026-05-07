@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { Outlet } from 'react-router';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 import { addUser } from '../utils/userslice';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
@@ -18,7 +19,7 @@ const Body = () =>
 
         try
         {
-            const res = await axios.get('http://localhost:3000/profile/view', { withCredentials: true });
+            const res = await axios.get(BASE_URL + '/profile/view', { withCredentials: true });
             dispatch(addUser(res.data));
         }
         catch (err)

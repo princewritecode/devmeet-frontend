@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { BASE_URL } from "../utils/constants";
 import { addUsersInFeed } from "../utils/feedslice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -15,7 +16,7 @@ const Feed = () =>
         if (feed) return; // Prevent fetching if we already have data
         try
         {
-            const res = await axios.get('http://localhost:3000/user/feed', { withCredentials: true });
+            const res = await axios.get(BASE_URL + '/user/feed', { withCredentials: true });
             // Make sure you are dispatching the correct part of the response
             dispatch(addUsersInFeed(res.data.data || res.data));
         } catch (err)

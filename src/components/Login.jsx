@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 import { addUser } from '../utils/userslice';
 import { useNavigate } from 'react-router';
 const Login = () =>
@@ -16,7 +17,7 @@ const Login = () =>
         {
             // 1. Point to the actual backend URL
             // 2. Wrap in try/catch to handle errors
-            const response = await axios.post('http://localhost:3000/login',
+            const response = await axios.post(BASE_URL + '/login',
                 { emailId: email, password },
                 { withCredentials: true }
             );

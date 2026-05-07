@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import UserCard from './UserCard';
 import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userslice';
 const EditProfile = ({ user }) =>
@@ -22,7 +23,7 @@ const EditProfile = ({ user }) =>
         try
         {
 
-            const res = await axios.patch('http://localhost:3000/profile/edit', { firstName, lastName, gender, age, photoUrl, about }, {
+            const res = await axios.patch(BASE_URL + '/profile/edit', { firstName, lastName, gender, age, photoUrl, about }, {
                 withCredentials: true
             });
             dispatch(addUser(res?.data?.data));

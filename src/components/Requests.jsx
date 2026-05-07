@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 import { addRequest, removeRequest } from "../utils/requestSlice";
 import { useEffect } from "react";
 
@@ -13,7 +14,7 @@ const Requests = () =>
     {
         try
         {
-            const res = await axios.get('http://localhost:3000/user/request/recieved', {
+            const res = await axios.get(BASE_URL + '/user/request/recieved', {
                 withCredentials: true
             });
             dispatch(addRequest(res?.data?.data || []));
@@ -30,7 +31,7 @@ const Requests = () =>
         {
             // The API call to the backend
             const res = await axios.post(
-                `http://localhost:3000/request/review/${status}/${id}`,
+                `${BASE_URL}/request/review/${status}/${id}`,
                 {},
                 { withCredentials: true }
             );
