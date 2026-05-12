@@ -5,3 +5,10 @@
     dark --prefersdark,
     cupcake;
 }
+
+button, 
+.btn, 
+a, 
+[role="button"] {
+  cursor: pointer !important;
+}

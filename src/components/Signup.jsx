@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useNavigate, Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userslice";
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -12,6 +14,7 @@ const Signup = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const signupUser = async (e) => {
     e.preventDefault();
@@ -22,6 +25,18 @@ const Signup = () => {
       await axios.post(BASE_URL + "/signup", payload, {
         withCredentials: true,
       });
+      
+      // The backend doesn't auto-login after signup, so we explicitly call login
+      // to get the auth cookie and user data
+      const loginRes = await axios.post(
+        BASE_URL + "/login",
+        { emailId, password },
+        { withCredentials: true }
+      );
+      
+      // Populate Redux store with the data from login so Navbar updates correctly
+      dispatch(addUser(loginRes.data));
+      
       navigate("/");
     } catch (err) {
       setError(
@@ -33,7 +48,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-[85vh] bg-base-200 flex items-center justify-center p-4 selection:bg-neutral selection:text-neutral-content transition-colors duration-300 py-12">
+    <div className="min-h-[calc(100vh-80px)] bg-base-200 flex items-center justify-center p-4 selection:bg-neutral selection:text-neutral-content transition-colors duration-300 py-12">
       <div className="w-full max-w-lg bg-base-100 rounded-2xl p-8 sm:p-10 shadow-xl border border-base-300">
         {/* Header Section */}
         <div className="text-center mb-8">

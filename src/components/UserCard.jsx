@@ -1,4 +1,21 @@
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeUserFromFeed } from "../utils/feedslice";
+
 const UserCard = ({ user }) => {
+    const dispatch = useDispatch();
+
+    const handleSendRequest = async (status, _id) => {
+        if (!_id) return; // Prevent action if this is a live preview card without an ID
+        try {
+            await axios.post(`${BASE_URL}/request/send/${status}/${_id}`, {}, { withCredentials: true });
+            dispatch(removeUserFromFeed(_id));
+        } catch (err) {
+            console.error("Error sending request:", err.message);
+        }
+    };
+
     return (
         <div className="card bg-base-100 w-full max-w-sm rounded-2xl shadow-xl border border-base-300 overflow-hidden transform transition-all hover:shadow-2xl">
             <figure className="h-64 bg-base-200 overflow-hidden relative">
@@ -35,10 +52,10 @@ const UserCard = ({ user }) => {
                 </p>
                 
                 <div className="card-actions justify-center mt-6 gap-3">
-                    <button className="flex-1 py-3 rounded-xl bg-neutral text-neutral-content font-bold shadow-md shadow-neutral/20 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                    <button onClick={() => handleSendRequest("interested", user._id)} className="flex-1 py-3 rounded-xl bg-neutral text-neutral-content font-bold shadow-md shadow-neutral/20 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer">
                         Interested
                     </button>
-                    <button className="flex-1 py-3 rounded-xl bg-transparent border-2 border-base-300 text-base-content font-bold hover:bg-base-200 hover:border-base-300 transition-all duration-200">
+                    <button onClick={() => handleSendRequest("ignore", user._id)} className="flex-1 py-3 rounded-xl bg-transparent border-2 border-base-300 text-base-content font-bold hover:bg-base-200 hover:border-base-300 transition-all duration-200 cursor-pointer">
                         Ignore
                     </button>
                 </div>
