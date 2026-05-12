@@ -37,14 +37,15 @@ const Feed = () =>
     if (feed.length === 0) return <h1 className="text-center mt-10">No users found!</h1>;
 
     return (
-        <div className="flex justify-center">
-            {/* Now it's safe to access feed[0] */}
-            {
-                feed.map((feedUser) =>
+        <div className="min-h-[85vh] bg-base-200 py-12 px-4 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-10 md:gap-12">
                 {
-                    return <UserCard user={feedUser} />;
-                })
-            }
+                    feed.map((feedUser, index) =>
+                    {
+                        return <UserCard key={feedUser._id || index} user={feedUser} />;
+                    })
+                }
+            </div>
         </div>
     );
 };
